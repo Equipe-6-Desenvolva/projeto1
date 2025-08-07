@@ -1,78 +1,102 @@
 package Models;
 
-
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Random;
 
 public class Avaliacao {
-        private final Integer id_Avaliacao;
-        private final Integer id_Reserva; //TODO: como o ID da reserva já esta atrelado a um usuario e um hotel nas reservas, acho desnecessário conter os mesmos IDs nessa classe caso deseja seguir a lógica do modelo relacional basta descomentar as linhas
-        private Integer estrelas;
-        private final LocalDate dt_Avaliacao;
-        private String comentario;
-        //private final Integer id_Hotel;
-        //private final Integer id_Clien    te;
+    private final Integer idAvaliacao;
+    private final Integer idReserva;
+    private final LocalDate dtAvaliacao;
+    private String comentario;
+    private Integer estrelas;
 
-        //Getters
-        public Integer getId_Avaliacao() {return id_Avaliacao;}
-        public Integer getId_Reserva() {return id_Reserva;}
-        public LocalDate getDt_Avaliacao() {return dt_Avaliacao;}
-        public String getComentario() {return comentario;}
-        public Integer getEstrelas() {return estrelas;}
-//    public Integer getId_Hotel() {return id_Hotel;}
-//    public Integer getId_Cliente() {return id_Cliente;}
+    //CONSTRUTORES
 
-        //Setters
-        public void setComentario(String comentario) {
-            if (comentario == null || comentario.length() > 20) {
-                throw new IllegalArgumentException("Comentário inválido ou excede o limite de 20 caracteres.");
-            }
+    /** Construtor principal, recebe idReserva, data, comentário e estrelas. */
+    public Avaliacao(Integer idReserva, LocalDate dtAvaliacao, String comentario, Integer estrelas) {
+        this.idAvaliacao = gerarIdAvaliacao();
+        this.idReserva    = Objects.requireNonNull(idReserva,    "ID de reserva não pode ser nulo");
+        this.dtAvaliacao  = Objects.requireNonNull(dtAvaliacao,  "Data de avaliação não pode ser nula");
+        setComentario(comentario);
+        setEstrelas(estrelas);
+    }
+
+    /** Construtor secundário, gera idReserva aleatório. */
+    public Avaliacao(LocalDate dtAvaliacao, String comentario, Integer estrelas) {
+        this(new Random().nextInt(1_000_000), dtAvaliacao, comentario, estrelas);
+    }
+
+    //GERAÇÃO DE ID
+
+    private int gerarIdAvaliacao() {
+        // TODO: idealmente o DB gera o ID para evitar duplicação
+        return new Random().nextInt(1_000_000);
+    }
+
+    //VALIDADORES
+
+    private boolean validaComentario(String comentario) {
+        if (comentario == null || comentario.isBlank() || comentario.length() < 20) {
+            throw new IllegalArgumentException(
+                    "O comentário deve ter ao menos 20 caracteres");
+        }
+        return true;
+    }
+
+    private boolean validaEstrelas(Integer estrelas) {
+        if (estrelas == null || estrelas < 1 || estrelas > 5) {
+            throw new IllegalArgumentException(
+                    "A avaliação deve conter no minímo 1 e no máximo 5 estrelas");
+        }
+        return true;
+    }
+
+    //SETTERS
+
+    public void setComentario(String comentario) {
+        if (validaComentario(comentario)) {
             this.comentario = comentario;
         }
-        public void setEstrelas(Integer estrelas){
+    }
+
+    public void setEstrelas(Integer estrelas) {
+        if (validaEstrelas(estrelas)) {
             this.estrelas = estrelas;
         }
+    }
 
-        //Métodos
-        private int gerarId() {
-            Random random = new Random();
-            return random.nextInt(1_000_000);
-        }//TODO: Cuidado pode acontecer de gerar IDs duplicados o ideal é que ao usar IDs eles sejam gerados dentro do banco para evitar esse tipo de problema
+    //GETTERS
 
-        @Override
-        public String toString() {
-            return "Validacoes{id=" + id_Avaliacao + ", idReserva=" + id_Reserva + ", dtAvaliacao=" + dt_Avaliacao +
-                    ", comentario='" + (comentario != null ? comentario : "N/A") + ", Estrelas= " + estrelas + "/5 " + "}";
-        }
+    public Integer getIdAvaliacao() {
+        return idAvaliacao;
+    }
 
-        //Construtores
-        public Avaliacao(Integer idReserva, Integer estrelas, String comentario){
-            if (idReserva == null) {throw new IllegalArgumentException("O ID da reserva não pode ser nulo.");}
-            if (estrelas == null || estrelas < 0 || estrelas > 5) {throw new IllegalArgumentException("Estrelas deve estar entre 0 e 5.");}
-            if (comentario == null || comentario.length() > 20){throw new IllegalArgumentException("Comentário inválido ou excede o limite de 20 caracteres.");}
+    public Integer getIdReserva() {
+        return idReserva;
+    }
 
-            this.id_Avaliacao = gerarId();
-            this.id_Reserva = idReserva;
-            this.estrelas = estrelas; //TODO: pode ser apagado essa ideia de estrela, sugiro seguir para casos que o usuário não queira fazer um comentário somente uma avaliação, necessario adicionar uma lógica na main para a quantidade de estrelas desejadas
+    public LocalDate getDtAvaliacao() {
+        return dtAvaliacao;
+    }
 
-            this.comentario = comentario;
-            this.dt_Avaliacao = LocalDate.now();
-//        this.id_Cliente = idCliente;
-//        this.id_Hotel = idHotel; //TODO: se desejar seguir com os IDs(Cliente e Hotel) basta adicionar nos parâmetros
+    public String getComentario() {
+        return comentario;
+    }
 
-        }
+    public Integer getEstrelas() {
+        return estrelas;
+    }
 
-        public Avaliacao(Integer idReserva, Integer estrelas){
-            if (idReserva == null) {throw new IllegalArgumentException("O ID da reserva não pode ser nulo.");}
-            if (estrelas == null || estrelas < 0 || estrelas > 5) {throw new IllegalArgumentException("Estrelas deve estar entre 0 e 5.");}
-            this.id_Avaliacao = gerarId();
-            this.id_Reserva = idReserva;
-            this.estrelas = estrelas;
-            this.dt_Avaliacao = LocalDate.now();
-//        this.id_Cliente = idCliente;
-//        this.id_Hotel = idHotel; //TODO: se desejar seguir com os IDs(Cliente e Hotel) basta adicionar nos parâmetros
 
-        }
-
+    @Override
+    public String toString() {
+        return "Avaliacao{" +
+                "idAvaliacao=" + idAvaliacao +
+                ", idReserva=" + idReserva +
+                ", dtAvaliacao=" + dtAvaliacao +
+                ", comentario='" + comentario + '\'' +
+                ", estrelas=" + estrelas +
+                '}';
     }
 }
