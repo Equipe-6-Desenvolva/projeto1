@@ -1,27 +1,28 @@
+package Models;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Hotel {
     private String nome;
-    private List<Quarto> quartos = new ArrayList<>();
+    private List<Quartos> quartos = new ArrayList<>();
 
     public Hotel(String nome) {
         this.nome = nome;
     }
 
-    public void adicionarQuarto(Quarto q) {
+    public void adicionarQuarto(Quartos q) {
         quartos.add(q);
     }
 
-    public List<Quarto> getQuartosLivres() {
-        List<Quarto> livres = new ArrayList<>();
-        for (Quarto q : quartos) {
+    public List<Quartos> getQuartosLivres() {
+        List<Quartos> livres = new ArrayList<>();
+        for (Quartos q : quartos) {
             if (q.isDisponivel()) livres.add(q);
         }
         return livres;
     }
 
-    public List<Quarto> getQuartos() {
+    public List<Quartos> getQuartos() {
         return quartos;
     }
 

@@ -1,8 +1,9 @@
-public class Quartos {
+package Models;
+public abstract class Quartos {
     private int numero;
     private boolean disponivel;
 
-    public Quarto(int numero) {
+    public Quartos(int numero) {
         this.numero = numero;
         this.disponivel = true;
     }
@@ -18,6 +19,8 @@ public class Quartos {
     public void setDisponivel(boolean ok) {
         this.disponivel = ok;
     }
+
+    public abstract boolean isVip();
 
     @Override
     public String toString() {
