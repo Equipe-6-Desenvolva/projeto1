@@ -53,4 +53,14 @@ public class Reservas {
     public LocalDate getDataSaida() { return dataSaida; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    @Override
+    public String toString() {
+        return "Reserva ID: " + idReserva +
+                " | Cliente: " + (cliente != null ? cliente.getNome() : "-") +
+                " | Quarto: " + (quarto != null ? quarto.getNumero() : "-") +
+                " | Entrada: " + (dataEntrada != null ? dataEntrada.toString() : "-") +
+                " | Saída: " + (dataSaida != null ? dataSaida.toString() : "-") +
+                " | Status: " + (status != null ? status : "-");
+    }
 }
