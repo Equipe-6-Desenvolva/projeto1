@@ -2,6 +2,12 @@
 
 Este projeto é um sistema simples de reservas de hotel desenvolvido em Java. Ele permite o cadastro de clientes, quartos (comuns e VIP), reservas e avaliações, além de consultar e cancelar reservas.
 
+
+## Divisão das tarefas
+- Guilherme: Reservas e gerenciamento
+- Willian: Avaliação e cliente.
+- Gabriel: Quartos e hotel.
+
 ## Conceitos de POO Utilizados
 - Abstração: A classe Quartos é abstrata e serve como base para os tipos de quartos do sistema.
 - Herança: As classes QuartoComum e QuartoVip herdam de Quartos.
